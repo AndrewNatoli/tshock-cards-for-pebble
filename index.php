@@ -5,11 +5,11 @@ require_once "vendor/autoload.php";
 use Guzzle\Http\Client;
 
 
-function doRequest($endpoint) {
+function doRequest($endpoint, $extra_params = "") {
     $client = new Client(API_URL);
 
     if(API_USE_TOKEN_AUTH) {
-        $endpoint .= "?token=".API_TOKEN;
+        $endpoint .= "?token=".API_TOKEN."&{$extra_params}";
     }
 
     try {
@@ -40,9 +40,17 @@ if($resp != null && $resp->status == 200) {
                 $content .= "{$player->nickname}\n";
             }
 
-            $content .= "\n";
         }
 
+    }
+
+    # Append the MOTD if we want it
+    if(API_GET_MOTD) {
+        $motd = doRequest("v2/server/rawcmd", "cmd=/motd");
+
+        if($motd != null && $motd->status == 200) {
+            $content .= "\n\nMOTD\n{$motd->response}";
+        }
     }
 
     echo json_encode(array(
