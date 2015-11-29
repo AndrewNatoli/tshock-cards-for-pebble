@@ -1,10 +1,19 @@
 # tshock-cards-for-pebble
-Show tshock server status on Cards for Pebble 
+Display the status of your [TShock](https://tshock.co/xf/index.php) server on [Cards for Pebble](https://keanulee.com/pebblecards)! 
 
 
 ## Card Format
-World Name
-Players Online: 0
+>World Name<br/>
+>Players: 1/8<br/>
+>
+>Players Online<br>
+>CreativeUsername
+>
+>MOTD
+>
+>Welcome to the great server! It's quite great, isn't it?
+
+*Players online can be disabled. When enabled it only displays if any players are presently in-game. MOTD can be disabled as well.* 
 
 ## Requirements
 ### TShock
