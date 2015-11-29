@@ -24,8 +24,29 @@ function doRequest($endpoint) {
 $resp = doRequest("v2/server/status");
 
 if($resp != null && $resp->status == 200) {
+
+    $content = "{$resp->world}\nPlayers: {$resp->playercount}/{$resp->maxplayers}";
+
+    # Append the player list if there's anyone online and we have that option enabled
+    if(API_GET_PLAYER_LIST && $resp->playercount > 0) {
+
+        $playerList = doRequest("v2/players/list");
+
+        if($playerList != null && $playerList->status == 200 && count($playerList->players) > 0) {
+
+            $content .= "\n\nPlayers Online\n";
+
+            foreach ($playerList->players as $player) {
+                $content .= "{$player->nickname}\n";
+            }
+
+            $content .= "\n";
+        }
+
+    }
+
     echo json_encode(array(
-        "content" => "{$resp->world}\nPlayers Online: {$resp->playercount}",
+        "content" => $content,
         "refresh_frequency" => API_REFRESH_FREQUENCY
     ));
 }
